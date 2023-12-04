@@ -10,10 +10,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 ##voy a hacer los graficos de energia de foldx de las mutantes elegidas
+
+#archivo donde estan los datos
 m="/home/solcanale/calculos nuevos con alphafold/resultados pop y foldx/FOLDX/Rank1/Table-all"
 
 df=pd.read_csv(m,header=0)
 df=df.loc[:, (df != 0).any(axis=0)]
+
+#lista de mutantes de interes
 mutantes=["TA173I","AA293P","SA243E","SA98E","NA279S","QA247E","DA106N","DA130E","EA96S"]
 
 def barras(mutante,save,nombre,label):
