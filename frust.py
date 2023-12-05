@@ -8,6 +8,8 @@ def frust(df,metodo,ss=None): #por si quiero usar el SSdraw
         zscore=(df_c[metodo]-prom)/sd
         df.loc[df["n"] == n[i], "zscore"] = zscore.tolist()
     zscore=df[df["aa"]==df["wt"]]
+    name="/home/solcanale/calculos nuevos con alphafold/Noviembre 2023/frustracion/"+metodo+"_frust.txt"
     if ss != None:
         zscore["zscore"]=zscore["wt"].astype(str)+" "+zscore["zscore"].astype(str)
-    zscore["zscore"].to_csv("/home/solcanale/calculos nuevos con alphafold/Noviembre 2023/frustracion/"+metodo+"_frust.txt",sep="\t",index=False,header=None)
+        name="/home/solcanale/calculos nuevos con alphafold/Noviembre 2023/frustracion/"+metodo+"_frust_SS.txt"
+    zscore["zscore"].to_csv(name,sep="\t",index=False,header=None)
