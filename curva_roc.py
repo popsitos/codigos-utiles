@@ -1,13 +1,23 @@
-y_true=df["ddG Fireprot"]
-y_pred_proba_c=((df["effect_prediction_independent"]  + df["ddG foldx"] ))/2
-df["y_pred_proba"]=((df["ddG foldx"] > 0) & (df["effect_prediction_independent"] > 0)).astype(int)
-y_pred_proba=df["ddG foldx"]
-y_pred_proba_p=df["ddG PopMusic"]
-y_pred_proba_e=df["effect_prediction_epistatic"]
-y_pred_proba_i=df["effect_prediction_independent"]
-df["y_binary"] = (y_true > 0).astype(int)
-y_binary=df["y_binary"]
-# y_pred_proba_c=df["y_pred_proba"]
+
+from sklearn.metrics import roc_curve, roc_auc_score, precision_recall_curve, auc
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+from ANALISIS_BENCHMARK import regresion,grafico_colores,l
+from datos_normalizados import df_r
+
+
+y_true=df_r["ddG Fireprot"]
+
+y_pred_proba=df_r["ddG foldx"]
+y_pred_proba_p=df_r["ddG PopMusic"]
+y_pred_proba_e=df_r["effect_prediction_epistatic"]
+y_pred_proba_i=df_r["effect_prediction_independent"]
+
+df_r["y_binary"] = (y_true > 0).astype(int)
+
+y_binary=df_r["y_binary"]
+# y_pred_proba_c=df_r["y_pred_proba"]
 
 # Suponiendo que y_true e y_pred_proba son tus etiquetas reales y probabilidades predichas, respectivamente
 fpr, tpr, _ = roc_curve(y_binary, y_pred_proba)
@@ -21,7 +31,7 @@ roc_auc = roc_auc_score(y_binary, y_pred_proba)
 roc_auc_e= roc_auc_score(y_binary, y_pred_proba_e)
 roc_auc_i = roc_auc_score(y_binary, y_pred_proba_i)
 roc_auc_p = roc_auc_score(y_binary, y_pred_proba_p)
-pr_auc = auc(recall, precision)
+# pr_auc = auc(recall, precision)
 
 # Grafica la curva ROC
 plt.figure(figsize=(8, 8))
@@ -36,11 +46,12 @@ plt.title('Receiver Operating Characteristic (ROC) Curve')
 plt.legend(loc='lower right')
 plt.show()
 
-# Grafica la curva PR
-plt.figure(figsize=(8, 8))
-plt.plot(recall, precision, color='darkgreen', lw=2, label=f'PR curve (AUC = {pr_auc:.2f})')
-plt.xlabel('Recall')
-plt.ylabel('Precision')
-plt.title('Precision-Recall (PR) Curve')
-plt.legend(loc='lower right')
-plt.show()
+# # Grafica la curva PR
+# plt.figure(figsize=(8, 8))
+# plt.plot(recall, precision, color='darkgreen', lw=2, label=f'PR curve (AUC = {pr_auc:.2f})')
+# plt.xlabel('Recall')
+# plt.ylabel('Precision')
+# plt.title('Precision-Recall (PR) Curve')
+# plt.legend(loc='lower right')
+# plt.show()
+
