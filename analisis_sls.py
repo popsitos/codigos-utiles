@@ -1,4 +1,3 @@
-#el orimer argumento es la salida de EV, la segunda la salida de MSA, tercero Foldx, cuarto PopMusic
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -6,7 +5,7 @@ import pandas as pd
 
 
 
-m="aWt_cBLS_pH5.A00" #ruta de archivo
+m="/home/solcanale/estabilizacion bls/mut4/cromatogramas secsls 2024/SLS_2024/Mut4-cenAdocky_20240312_TBS-TC.A00" #ruta de archivo
 #columna 0 tiempo
 #columna 1 IR eliminar
 #columna 3 90 restar blanco 
@@ -35,15 +34,24 @@ def leer(n):
 
 
     ###para el nombre del pico
-    x=df1[df1["uv"] == df1["uv"].max()] 
-    return disp,uv,time,x
+    xuv=df1[df1["uv"] == df1["uv"].max()]
+    xdisp=df1[df1["dispersion"] == df1["dispersion"].max()]
+    return disp,uv,time,xuv,xdisp
 
-disp,uv,time,x=leer(m)
+disp,uv,time,xuv,xdisp=leer(m)
 
 
     ###para los maximos de los ejes 
 maxuv=uv.max()+0.5
 maxdisp=disp.max()+1
+
+pm="41.15 kDa"
+pm2="709.7 kDa"
+y1=uv.max()+0.1
+y2=disp.max()+0.4
+ytick=[0,2,4,6,8,10,12,14,16,18]
+miny=-0.6
+title="Mut4-CenAdockxy (1:2) pH 7"
 
 
 ### todo lo que sigue es para que setee los parametros segun los datos
@@ -114,8 +122,8 @@ ax1.plot(time, uv, color=color)
 ax1.tick_params(axis='y', labelcolor=color)
 ax1.set_ylim([-0.1,maxuv])
 plt.xticks([0, 20, 40, 60])  
-plt.yticks([0,0.2,0.4,0.6,0.8,1])
-plt.text(x["time"]-2,y1,pm)
+plt.yticks([0,0.2,0.4,0.6,0.8,1, 1.2, 1.4, 1.6, 1.8])
+plt.text(xuv["time"]-2,y1,pm)
 
 ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
 
@@ -128,10 +136,10 @@ ax2.set_ylim([miny,maxdisp])
 ax2.spines[['top']].set_visible(False)
 fig.tight_layout()  # otherwise the right y-label is slightly clipped
 plt.yticks(ytick)
-plt.text(x["time"]+2,y2,pm2)
+plt.text(xdisp["time"]-2,y2,pm2)
 
 plt.draw()
 ax2.set_title(title)
 o=m.replace(".A00",".png")
-plt.savefig(o, transparent=True, dpi=500)
+plt.savefig(o, transparent=True, dpi=500,bbox_inches='tight')
 plt.show()
